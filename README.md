@@ -1,5 +1,4 @@
-# Proyecto Escolar (Enero - Julio 2020): 
-# Administración de negocios de comida rápida y repostería 
+# Administración de negocios de comida rápida y repostería  | ## Proyecto Escolar (Enero - Julio 2020)
 
 ### Tecnologías:
 - SQL Developer
