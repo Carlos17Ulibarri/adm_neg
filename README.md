@@ -4,9 +4,8 @@
 ### Tecnologías:
 #### - SQL Developer
 #### - Java 
-### Documentación - Base de datos: 
-#### - [Link:](https://drive.google.com/file/d/1Ri6KP8BVzNl7WZim_BryQiwuPevS1iZb/view?usp=share_link)
-##### - Requerimientos
-##### - Diagrama E-R
-##### - Normalización 
-##### - Diagrama relacional
+### [Documentación - Base de datos:](https://drive.google.com/file/d/1Ri6KP8BVzNl7WZim_BryQiwuPevS1iZb/view?usp=share_link)
+#### - Requerimientos
+#### - Diagrama E-R
+#### - Normalización 
+#### - Diagrama relacional
