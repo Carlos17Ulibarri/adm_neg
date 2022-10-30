@@ -1,4 +1,4 @@
-# Administración de negocios de comida rápida y repostería 
+# Administración de negocios de comida rápida y repostería:
 ## Proyecto Escolar (Enero - Julio 2020)
 
 ### Tecnologías:
@@ -9,3 +9,5 @@
 - Diagrama E-R
 - Normalización 
 - Diagrama relacional
+### Vista previa
+
