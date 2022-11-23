@@ -1,0 +1,79 @@
+--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  FUNCIONES  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+--1. Función propina: La función debe recibir el monto y el porcentaje de la propina y debe regresar el total a pagar
+--COMPILACION
+CREATE OR REPLACE FUNCTION PROPINA (MONTO FLOAT, PORCENTAJE FLOAT) RETURN FLOAT IS
+M_TOTAL FLOAT;
+    BEGIN
+        M_TOTAL := MONTO + (MONTO - (MONTO*PORCENTAJE));
+        RETURN M_TOTAL;
+    END;
+
+--EJECUCION
+SELECT PROPINA(1000, .5)AS MONTO_TOTAL
+FROM DUAL; 
+
+--2. Función CURP: la función debe recibir nombres, apellidos, fecha y lugar de nacimiento (el lugar completo p.e: Oaxaca, CDMX, etc) y regresará el curp de la persona sin homoclave.
+--COMPILACION
+CREATE OR REPLACE FUNCTION CURP(APELLIDOP VARCHAR2, APELLIDOM VARCHAR2, NOMBRE VARCHAR2, FECHA DATE, SEXO VARCHAR2,L_NAC VARCHAR2) RETURN VARCHAR2 IS 
+    CURPF    VARCHAR2(50);
+    FECHA_D  VARCHAR2(2);
+    FECHA_M  VARCHAR2(2);
+    FECHA_A1 VARCHAR2(4);
+    FECHA_A2 VARCHAR2(2);
+    NOM      VARCHAR2(1);
+    AP_P     VARCHAR2(2);
+    AP_M     VARCHAR2(1);
+
+    BEGIN
+        FECHA_D := TO_CHAR(EXTRACT(DAY FROM FECHA));
+        FECHA_M := TO_CHAR(EXTRACT(MONTH FROM FECHA));
+        FECHA_A1:= TO_CHAR(EXTRACT(YEAR FROM FECHA));
+        FECHA_A2:= SUBSTR(FECHA_A1,3,2);
+        AP_P    := (SUBSTR(APELLIDOP,1,2));
+        AP_M    := (SUBSTR(APELLIDOM,1,1));
+        NOM     := (SUBSTR(NOMBRE,1,1));
+        CURPF   := UPPER(AP_P || AP_M || NOM || FECHA_A2 || FECHA_M || FECHA_D || SEXO || L_NAC);
+        RETURN CURPF;
+    END;
+    
+    
+--EJECUCION
+SELECT CURP('Herrera','Ulibarri','Carlos Alberto',SYSDATE,'H','CDMX') AS CURP FROM DUAL;
+
+--UTILIZANDO DATOS DE LA BASE DE DATOS NEGOCIO 
+SELECT CLIENTE_APELLIDOP ||' '||CLIENTE_APELLIDOM||' '|| CLIENTE_NOMBRE||' '||PEDIDO_FECHA_CREACION||' '||ESTADO_ESTADO AS DATOS,
+CURP(CLIENTE_APELLIDOP,CLIENTE_APELLIDOM,CLIENTE_NOMBRE,PEDIDO_FECHA_CREACION,ESTADO_ESTADO)AS CURP
+FROM CLIENTE 
+JOIN DIRECCION ON CLIENTE_DIRECCION_ID = DIRECCION_ID
+JOIN ESTADO ON DIRECCION_ESTADO_ID = ESTADO_ID
+JOIN PEDIDO ON PEDIDO_CLIENTE_ID = CLIENTE_ID;
+
+--3. Función aguinaldo: la función recibirá el sueldo mensual y los días laborados y regresará el monto del aguinaldo del empleado
+--COMPILACION
+CREATE OR REPLACE FUNCTION AGUINALDO (SUELDO FLOAT, DIAS_L NUMBER) RETURN FLOAT IS
+    AGUINALDO FLOAT;
+    SUELDO_D  FLOAT;
+    DIAS_P    FLOAT;
+    BEGIN
+        SUELDO_D  := SUELDO/15;
+        DIAS_P    := 0.041*SUELDO_D;
+        AGUINALDO := SUELDO_D*DIAS_P;
+        RETURN AGUINALDO;
+    END;
+    
+--EJECUCION
+SELECT AGUINALDO(10000,160) AS AGUINALDO FROM DUAL;
+
+--4. Función prima vacacional: la función recibirá el salario mensual y los días de vacaciones y regresará el correspondiente a la prima vacacional
+--COMPILACION
+CREATE OR REPLACE FUNCTION PRIMA_VACACIONAL (SALARIO FLOAT, DIAS_V NUMBER) RETURN FLOAT IS 
+    P_V      FLOAT;
+    SUELDO_D FLOAT;
+    BEGIN 
+    SUELDO_D := SALARIO/30; 
+    P_V      := SUELDO_D*DIAS_V*.25;
+    RETURN P_V;
+    END;
+
+--EJECUCION
+SELECT PRIMA_VACACIONAL(15000,15)AS PRIMA_V FROM DUAL;
